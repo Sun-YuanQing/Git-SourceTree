@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>audio</title>
+		<script src="vconsole.min.js" type="text/javascript" charset="utf-8"></script>
+
+	</head>
+	<body>
+		<audio id="audio" controls autoPlay></audio>
+		<script type="text/javascript">
+			var vConsole = new VConsole();
+			console.log('vConsole', vConsole);
+
+			window.onload = function() {
+				var audiostr = false;
+				const audio = document.getElementById("audio")
+
+
+				function getUserMedia(constraints, success, error) {
+					if (navigator.webkitGetUserMedia) { //webkit内核浏览器 API
+						audiostr = 'webkitGetUserMedia';
+						navigator.webkitGetUserMedia(constraints, success, error);
+
+					} else if (navigator.getUserMedia) { //旧版API  
+						audiostr = 'getUserMedia111111111';
+						navigator.getUserMedia(constraints, success, error);
+					} else if (navigator.mozGetUserMedia) { //Firefox API   
+						audiostr = 'mozGetUserMedia11111111111';
+						navigator.mozGetUserMedia(constraints, success, error);
+					}  else if (navigator.mediaDevices.getUserMedia) { //最新版API
+					    audiostr = 'mediaDevices.getUserMedia>1111';
+						navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
+					} 
+					console.log(audiostr)
+				}
+
+
+
+				function success(stream) {
+					//console.log(JSON.stringify(stream));
+					var audioTrack = stream.getAudioTracks()
+
+					audio.srcObject = stream;
+					audio.play();
+					console.log(audioTrack, audio);
+				}
+
+				function error(err) {
+					console.log(err);
+				}
+				getUserMedia({
+					audio: true,
+					video: false
+				}, success, error);
+
+				// oBtn.addEventListener("click", function() {
+				// 	if (audiostr == true) { //getUserMedia返回false说明调用失败  
+				// 		context.drawImage(audio, 0, 0, 200, 200);
+				// 	} else {
+				// 		console.log("获取摄像头失败，无法拍照！");
+				// 	}
+
+				// }, false);
+			}
+		</script>
+	</body>
+</html>

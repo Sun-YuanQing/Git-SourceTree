@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>33 捕获Video作为媒体流</title>
+		<script src="vconsole.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+
+	</head>
+	<body>
+		<!--autoPlay:自动播放 loop:循环播放  muted：静音  plarysInline-->
+		<video id="sourceVideo" height="300" width="350" controls loop muted>
+			<source src="video.mp4" type="video/mp4" />
+		</video>
+		<canvas id="canvas" height="200" width="350"></canvas>
+		<audio id="audio" controls autoPlay></audio>
+		<script type="text/javascript">
+			var vConsole = new VConsole();
+
+			window.onload = function() {
+				var sourceVideo = document.getElementById("sourceVideo"),
+					stream = null,
+					sourceVideo = document.getElementById("sourceVideo"),
+					canvas = document.getElementById("canvas"),
+					context = canvas.getContext("2d"),
+					audio = document.getElementById("audio"),
+					audiostr = '';
+
+				// let constraints = {
+				// 	audio: true,
+				// 	video: true
+				// }
+				//音频获取
+				function getUserMedia(constraints, success, error) {
+					
+					console.log(audiostr)
+				}
+				
+				sourceVideo.oncanplay = () => {
+					
+					setInterval(() => {
+						context.drawImage(sourceVideo, 0, 0, 350, 200);
+					}, 0);
+					console.log( sourceVideo.getAudioTracks());
+					 audio.srcObject =  sourceVideo.getAudioTrack();
+					 audio.play();
+				};
+
+			}
+		</script>
+	</body>
+</html>

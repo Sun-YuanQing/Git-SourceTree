@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>32媒体流与轨道API</title>
+		<script src="vconsole.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var vConsole = new VConsole();
+
+			window.onload = function() {
+				var videostr = false;
+				var video = document.getElementById("video"),
+					btnGetTracks = document.getElementById("btnGetTracks"),
+					btnGetAudioTracks = document.getElementById("btnGetAudioTracks"),
+					btnGetVideoTracks = document.getElementById("btnGetVideoTracks"),
+					btnRemoveAudioTracks = document.getElementById("btnRemoveAudioTracks"),
+					btnGetTrackById = document.getElementById("btnGetTrackById"),
+					stream = {};
+
+
+					function getUserMedia(constraints, success, error) {
+
+						if (navigator.getUserMedia) { //旧版API  
+							navigator.getUserMedia(constraints, success, error);
+						} else if (navigator.mozGetUserMedia) { //Firefox API   
+							navigator.mozGetUserMedia(constraints, success, error);
+						} else if (navigator.webkitGetUserMedia) { //webkit内核浏览器 API  
+							navigator.webkitGetUserMedia(constraints, success, error);
+						} else if (navigator.mediaDevices.getUserMedia) { //最新版API  
+							navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
+						} else {
+							videostr = false;
+						}
+						videostr = true;
+					}
+
+
+				function success(streams) {
+					stream = streams
+					video.srcObject = stream;
+					video.play();
+				}
+
+				function error(err) {
+					console.log(err);
+				}
+				getUserMedia({
+					audio: true,
+					video: true
+				}, success, error);
+				//获取所有轨道
+				btnGetTracks.addEventListener("click", function() {
+					if (videostr == true) { //getUserMedia返回false说明调用失败  
+						 let VideoTrack = stream.getTracks();
+						 console.log(VideoTrack);
+					} else {
+						console.log("获取摄像头失败，无法拍照！");
+					}
+
+				}, false);
+				//获取音频轨道
+				btnGetAudioTracks.addEventListener("click", function() {
+					if (videostr == true) { //getUserMedia返回false说明调用失败  
+						 let VideoTrack = stream.getAudioTracks();
+						 console.log(VideoTrack);
+					} else {
+						console.log("获取摄像头失败，无法拍照！");
+					}
+				
+				}, false);
+				//获取视频轨道
+				btnGetVideoTracks.addEventListener("click", function() {
+					if (videostr == true) { //getUserMedia返回false说明调用失败  
+						 let VideoTrack = stream.getVideoTracks();
+						 console.log(VideoTrack);
+					} else {
+						console.log("获取摄像头失败，无法拍照！");
+					}
+				
+				}, false);
+				
+				//删除音频轨道
+				btnRemoveAudioTracks.addEventListener("click", function() {
+					if (videostr == true) { //getUserMedia返回false说明调用失败  
+						 stream.removeTrack(stream.getAudioTracks()[0]);
+						 console.log('删除音频轨道');
+					} else {
+						console.log("获取摄像头失败，无法拍照！");
+					}
+				
+				}, false);
+				//根据Id获取音频轨道
+				btnGetTrackById.addEventListener("click", function() {
+					if (videostr == true) { //getUserMedia返回false说明调用失败  
+						 stream.getTrackById(stream.getTracks()[0].id);
+						 console.log('根据Id获取音频轨道',  stream.getTrackById(stream.getTracks()[0].id));
+					} else {
+						console.log("获取摄像头失败，无法拍照！");
+					}
+				
+				}, false);
+			}
+		</script>
+	</head>
+	<body>
+		<video id="video" height="300" width="230" controls></video>
+		<button id="btnGetTracks">获取所有轨道</button>
+		<button id="btnGetAudioTracks">获取音频轨道</button>
+		<button id="btnGetVideoTracks">获取视频轨道</button>
+		<button id="btnRemoveAudioTracks">删除音频轨道</button>
+		<button id="btnGetTrackById">根据Id获取音频轨道</button>
+	</body>
+</html>

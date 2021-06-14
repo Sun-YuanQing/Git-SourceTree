@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>33 捕获Video作为媒体流</title>
+		<script src="vconsole.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+
+	</head>
+	<body>
+		<!--autoPlay:自动播放 loop:循环播放  muted：静音  plarysInline-->
+		<video id="sourceVideo" height="300" width="230" controls loop muted>
+			<source src="video.mp4" type="video/mp4" />
+		</video>
+
+		<video id="PlaryVideo" height="300" width="230"  controls autoPlay>
+			<source id="PlaryVideoSource" type="video/mp4" />
+		</video>
+
+		<script type="text/javascript">
+			var vConsole = new VConsole();
+
+			window.onload = function() {
+				var sourceVideo = document.getElementById("sourceVideo"),
+					stream = null,
+					sourceVideo = document.getElementById("sourceVideo"),
+					PlaryVideo = document.getElementById("PlaryVideo");
+				// let constraints = {
+				// 	audio: true,
+				// 	video: true
+				// }
+
+				sourceVideo.oncanplay = () =>{
+					if (sourceVideo.mozCaptureStream ) {
+						console.log("oncanplay>>>>>>>>>>>>>>..mozCaptureStream",typeof sourceVideo.mozCaptureStream);
+						PlaryVideo.srcObject = sourceVideo.mozCaptureStream(1);
+					} else if (sourceVideo.captureStream) {
+						console.log("oncanplay>>>>>>>>>>>>>>..captureStream", typeof sourceVideo.captureStream);
+						PlaryVideo.srcObject = sourceVideo.captureStream(1)
+					}
+				};
+
+			}
+		</script>
+	</body>
+</html>
