@@ -1,6 +1,7 @@
 <template>
 	<view class="content">
-		<web-view src="/hybrid/html/PeerConnection.html"></web-view>
+		
+		<web-view src="/hybrid/html/mokPeerConnection.html"></web-view>
 	</view>
 </template>
 

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>video</title>
+		<script src="vconsole.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var vConsole = new VConsole();
+			console.log('vConsole', vConsole);
+			window.onload = function() {
+				var videostr = false;
+				const video = document.getElementById("video"),
+					oBtn = document.getElementById("btn"),
+					canvas = document.getElementById("canvas"),
+					context = canvas.getContext("2d");
+
+				var flag = getUserMedia({
+					audio: true,
+					video: true
+				}, success, error);
+
+				function getUserMedia(constraints, success, error) {
+					if (navigator.getUserMedia) { //旧版API  
+						navigator.getUserMedia(constraints, success, error);
+					} else if (navigator.mozGetUserMedia) { //Firefox API   
+						navigator.mozGetUserMedia(constraints, success, error);
+					} else if (navigator.webkitGetUserMedia) { //webkit内核浏览器 API  
+						navigator.webkitGetUserMedia(constraints, success, error);
+					} else if (navigator.mediaDevices.getUserMedia) { //最新版API  
+						navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
+					} else {
+						videostr = false;
+					}
+					videostr = true;
+				}
+				oBtn.addEventListener("click", function() {
+					if (videostr == true) { //getUserMedia返回false说明调用失败  
+						context.drawImage(video, 0, 0, 230, 300);
+					} else {
+						console.log("获取摄像头失败，无法拍照！");
+					}
+				}, false);
+
+
+
+				function success(stream) {
+					//console.log(JSON.stringify(stream));
+
+					video.srcObject = stream;
+					video.play();
+					var VideoTrack = stream.getVideoTracks()
+					console.log(VideoTrack);
+				}
+
+				function error(err) {
+					console.log(err);
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<video id="video" height="330" width="300" controls></video>
+		<button id="btn">拍照</button>
+		<canvas id="canvas" height="300" width="230"></canvas>
+	</body>
+</html>
