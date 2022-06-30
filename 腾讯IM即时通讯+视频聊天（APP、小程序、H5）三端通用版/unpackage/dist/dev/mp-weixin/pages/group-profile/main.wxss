@@ -1,0 +1,73 @@
+.add-member-modal-on-focus {
+  -webkit-transform: translateY(-70px);
+          transform: translateY(-70px);
+}
+.group-detail-wrapper {
+  height: 100vh;
+  background-color: $background;
+}
+.group-detail-wrapper .header {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
+  background-color: $white;
+  padding-bottom: 18px;
+  margin-bottom: 8px;
+}
+.group-detail-wrapper .header .member,
+.group-detail-wrapper .header .show-more-btn,
+.group-detail-wrapper .header .add-member-btn {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  width: 20%;
+  padding-top: 16px;
+}
+.group-detail-wrapper .header .member .name,
+.group-detail-wrapper .header .show-more-btn .name,
+.group-detail-wrapper .header .add-member-btn .name {
+  width: 40px;
+  font-size: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+.group-detail-wrapper .header .member .avatar,
+.group-detail-wrapper .header .show-more-btn .avatar,
+.group-detail-wrapper .header .add-member-btn .avatar {
+  width: 40px;
+  height: 40px;
+}
+.group-detail-wrapper .header .show-more-btn .name,
+.group-detail-wrapper .header .add-member-btn .name {
+  font-size: 10px;
+}
+.group-action {
+  margin-top: 8px;
+}
+.quit {
+  color: $danger;
+}
+.user-id-input {
+  margin: 12px auto;
+  width: 80%;
+  padding: 0 12px;
+  border-bottom: 1px solid $light-background;
+}
+.cell-value {
+  color: $dark-background !important;
+}
+

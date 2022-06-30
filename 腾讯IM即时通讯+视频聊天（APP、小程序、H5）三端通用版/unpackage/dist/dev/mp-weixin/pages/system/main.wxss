@@ -1,0 +1,59 @@
+.handle.data-v-04c515a0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.card.data-v-04c515a0 {
+  font-size: 14px;
+  margin: 20px;
+  padding: 20px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: 1px solid #abdcff;
+  background-color: #f0faff;
+  -webkit-border-radius: 12px;
+          border-radius: 12px;
+}
+.card .time.data-v-04c515a0 {
+  font-weight: 600;
+  color: $base;
+}
+.button.data-v-04c515a0 {
+  color: #fff;
+  background-color: $primary;
+  -webkit-border-radius: 8px;
+          border-radius: 8px;
+  line-height: 30px;
+  font-size: 16px;
+  width: 70px;
+}
+.delete.data-v-04c515a0 {
+  background-color: $danger;
+}
+.choose.data-v-04c515a0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  height: 100%;
+}
+.input.data-v-04c515a0 {
+  text-align: center;
+  height: 32px;
+  background-color: #fff;
+  -webkit-border-radius: 8px;
+          border-radius: 8px;
+  border: 1px solid $border-light;
+  font-size: 16px;
+  margin: 10px 20px;
+}
+

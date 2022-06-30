@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "uni-app",
+  "usingComponents": {
+    "webrtc-room": "/static/component/webrtc-room/webrtc-room"
+  }
+}

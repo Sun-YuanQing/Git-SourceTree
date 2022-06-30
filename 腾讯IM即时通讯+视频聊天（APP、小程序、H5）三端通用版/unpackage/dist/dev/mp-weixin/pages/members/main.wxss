@@ -1,0 +1,63 @@
+.search.data-v-6cb85a68 {
+  background-color: $background;
+  padding: 8px 8px 8px 8px;
+}
+.input.data-v-6cb85a68 {
+  text-align: center;
+  height: 32px;
+  background-color: #fff;
+  -webkit-border-radius: 8px;
+          border-radius: 8px;
+  font-size: 16px;
+  border: 1px solid $border-base;
+}
+.avatar.data-v-6cb85a68 {
+  padding-right: 10px;
+}
+.information.data-v-6cb85a68 {
+  width: 100%;
+}
+.chat.data-v-6cb85a68 {
+  line-height: 32px;
+  padding: 10px;
+  background-color: $background;
+  margin-bottom: -1px;
+  border-top: 1px solid $border-base;
+  border-bottom: 1px solid $border-base;
+}
+.right.data-v-6cb85a68 {
+  padding: 0 18px 0 8px;
+}
+.set.data-v-6cb85a68 {
+  color: #4082a2;
+  font-size: 14px;
+}
+.delete.data-v-6cb85a68 {
+  color: #c86957;
+  font-size: 14px;
+}
+.username.data-v-6cb85a68 {
+  font-size: 14px;
+  color: $base;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.last.data-v-6cb85a68 {
+  color: $regular;
+  font-size: 12px;
+}
+.content.data-v-6cb85a68 {
+  color: $regular;
+  font-size: 12px;
+  width: 80%;
+}
+.remain.data-v-6cb85a68 {
+  color: #fff;
+  font-size: 12px;
+  background-color: $danger;
+  -webkit-border-radius: 8px;
+          border-radius: 8px;
+  padding: 2px 8px;
+}
+

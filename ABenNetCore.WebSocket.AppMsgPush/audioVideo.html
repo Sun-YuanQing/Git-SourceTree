@@ -1,348 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<meta charset="gb2312" />
-		<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
-		<title>ASP.NET Core基于WebSocket实现消息推送实战演练</title>
-		<style type="text/css">
-			.container {
-				font-family: "Courier New";
-				width: 680px;
-				height: 300px;
-				overflow: auto;
-				border: 1px solid black;
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>video</title>
+		<script src="vconsole.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			
+			  	var vConsole = new VConsole();  
+				console.log('vConsole',vConsole);
+			  
+			window.onload = function() {
+				var videostr = false;
+				const video = document.getElementById("video"),
+					oBtn = document.getElementById("btn"),
+					canvas = document.getElementById("canvas"),
+					context = canvas.getContext("2d");
+					
+				var flag = getUserMedia({
+					audio: true,
+					video: true
+				}, success, error);
+				function getUserMedia(constraints, success, error) {
+					if (navigator.getUserMedia) { //鏃х増API  
+						navigator.getUserMedia(constraints, success, error);
+					} else if (navigator.mozGetUserMedia) { //Firefox API   
+						navigator.mozGetUserMedia(constraints, success, error);
+					} else if (navigator.webkitGetUserMedia) { //webkit鍐呮牳娴忚鍣� API  
+						navigator.webkitGetUserMedia(constraints, success, error);
+					} else if (navigator.mediaDevices.getUserMedia) { //鏈�鏂扮増API  
+						navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
+					} else {
+						videostr = false;
+					}
+					videostr= true;
+				}
+				oBtn.addEventListener("click", function() {
+					if (videostr == true) { //getUserMedia杩斿洖false璇存槑璋冪敤澶辫触  
+						context.drawImage(video, 0, 0, 230, 300);
+					} else {
+						console.log("鑾峰彇鎽勫儚澶村け璐ワ紝鏃犳硶鎷嶇収锛�");
+					}
+				}, false);
+
+				
+
+				function success(stream) {
+					//console.log(JSON.stringify(stream));
+					
+					video.srcObject = stream;
+					video.play();
+					var VideoTrack = stream.getVideoTracks()
+					console.log(VideoTrack);
+				}
+
+				function error(err) {
+					console.log(err);
+				}
 			}
-
-			.LockOff {
-				display: none;
-				visibility: hidden;
-			}
-
-			.LockOn {
-				display: block;
-				visibility: visible;
-				position: absolute;
-				z-index: 999;
-				top: 0px;
-				left: 0px;
-				width: 100%;
-				height: 768%;
-				background-color: #ccc;
-				text-align: center;
-				padding-top: 20%;
-				filter: alpha(opacity=75);
-				opacity: 0.75;
-			}
-		</style>
-
-		<script src="../wwwroot/lib/jquery/dist/jquery.js" type="text/javascript"></script>
-
+		</script>
 	</head>
 	<body>
-		<video id="localvideo" controls autoplay playsinline muted></video>
-		<video id="remotevideo" controls autoplay playsinline></video>
-		<div>
-			<button id="connserver">Connect Sig Server</button>
-			<!--<button id="start" disabled>Start</button>	
-			<button id="call" disabled>Call</button>	
-			<button id="hangup" disabled>HangUp</button>	
-			-->
-			<button id="leave" disabled>Leave</button>
-		</div>
-		<div id="skm_LockPane" class="LockOff"></div>
-		<form id="form1" runat="server">
-			<div>
-				按下连接按钮，客户端浏览器会通过会与WebSocket服务端进行连接。
-			</div>
-			服务器地址: <input type="text" id="Connection" value="ws://127.0.0.1:5000/messagePushHub" size="50" />
-			用户名： <input type="text" id="txtName" value="abennet" />
-			<button id='ToggleConnection' type="button" onclick='ToggleConnectionClicked();'>连接</button>
-			<br />
-			<div id='LogContainer' class='container'></div>
-			<br />
-			<div id='SendDataContainer'>
-				<input type="text" id="DataToSend" size="88" />
-				<button id='SendData' type="button" onclick='SendDataClicked();'>发送</button>
-			</div>
-		</form>
-		<script type="text/javascript">
-			var localVideo = document.querySelector('video#localvideo');
-			var remoteVideo = document.querySelector('video#remotevideo');
-
-			var btnConn = document.querySelector('button#connserver');
-			var btnLeave = document.querySelector('button#leave');
-			var pcConfig = {
-				'iceServers': [{
-					'urls': 'turn:stun.al.learningrtc.cn:3478',
-					'credential': "mypasswd",
-					'username': "garrylea"
-				}]
-			};
-			var localStream = null;
-			var remoteStream = null;
-			var pc = null;
-			var roomid;
-			var socket = null;
-			var offerdesc = null;
-			var state = 'init';
-
-			btnConn.onclick = connSignalServer
-			btnLeave.onclick = leave;
-			
-			function connSignalServer(){
-				
-				//开启本地视频
-				start();
-			
-				return true;
-			}
-			
-			function getMediaStream(stream){
-			
-				localStream = stream;	
-				localVideo.srcObject = localStream;
-			
-				//setup connection
-				conn();
-			}
-			
-			function handleError(err){
-				if(err){
-					console.error('Failed to get Media Stream!', err);	
-				}else {
-					console.error('Failed to get Media Stream!');
-				}
-			}
-			
-			function start(){
-			
-				if(!navigator.mediaDevices ||
-					!navigator.mediaDevices.getUserMedia){
-					console.error('the getUserMedia is not supported!');
-					return;
-				}else {
-			
-					var constraints = {
-						video: true,
-						audio: false
-					}
-			
-					navigator.mediaDevices.getUserMedia(constraints)
-								.then(getMediaStream)
-								.catch(handleError);
-				}
-			
-			}
-			
-			function getRemoteStream(e){
-				remoteStream = e.streams[0];
-				remoteVideo.srcObject = e.streams[0];
-			}
-			function conn(){
-				createPeerConnection();
-				state = 'joined_conn';
-				call();
-			}
-			
-			
-			
-			function handleOfferError(err){
-				console.error('Failed to create offer:', err);
-			}
-			
-			function handleAnswerError(err){
-				console.error('Failed to create answer:', err);
-			}
-			function sendMessage(roomid, data){
-			
-				console.log('send message to other end', roomid, data);
-				if(!socket){
-					console.log('socket is null');
-				}
-				socket.emit('message', roomid, data);
-			}
-			function getAnswer(desc){
-				pc.setLocalDescription(desc);
-			
-				//send answer sdp
-				sendMessage(roomid, desc);
-			}
-			
-			function getOffer(desc){
-				pc.setLocalDescription(desc);
-			
-				sendMessage(roomid, offerdesc);	
-			}
-			
-			function call(){
-				
-				if(state === 'joined_conn'){
-			
-					var offerOptions = {
-						offerToRecieveAudio: 1,
-						offerToRecieveVideo: 1
-					}
-			
-					pc.createOffer(offerOptions)
-						.then(getOffer)
-						.catch(handleOfferError);
-				}
-			}
-			
-			function createPeerConnection(){
-			
-				console.log('create RTCPeerConnection!');
-				if(!pc){
-					pc = new RTCPeerConnection(pcConfig);
-			
-					pc.onicecandidate = (e)=>{
-			
-						if(e.candidate) {
-							sendMessage(roomid, {
-								type: 'candidate',
-								label:event.candidate.sdpMLineIndex, 
-								id:event.candidate.sdpMid, 
-								candidate: event.candidate.candidate
-							});
-						}else{
-							console.log('this is the end candidate');
-						}
-					}
-			
-					pc.ontrack = getRemoteStream;
-				}else {
-					console.warning('the pc have be created!');
-				}
-			
-				console.log('bind tracks into RTCPeerConnection!');
-			
-				if(localStream === null || localStream === undefined) {
-					console.error('localstream is null or undefined!');
-					return false;
-				}
-			
-				//add all track into peer connection
-				localStream.getTracks().forEach((track)=>{
-					pc.addTrack(track, localStream);	
-				});
-			
-				return true;	
-			}
-			
-			
-			function hangup(){
-			
-				if(pc) {
-					pc.close();
-					pc = null;
-				}
-			
-			}
-			
-			function closeLocalMedia(){
-			
-				if(localStream && localStream.getTracks()){
-					localStream.getTracks().forEach((track)=>{
-						track.stop();
-					});
-				}
-				localStream = null;
-			}
-			
-			//-----------------------------
-			var ws;
-			var SocketCreated = false;
-			var isUserloggedout = false;
-
-			function lockOn(str) {
-				var lock = document.getElementById('skm_LockPane');
-				if (lock)
-					lock.className = 'LockOn';
-				lock.innerHTML = str;
-			}
-
-			function lockOff() {
-				var lock = document.getElementById('skm_LockPane');
-				lock.className = 'LockOff';
-			}
-
-			function ToggleConnectionClicked() {
-				if (SocketCreated && (ws.readyState == 0 || ws.readyState == 1)) {
-					SocketCreated = false;
-					isUserloggedout = true;
-					ws.close(); //断开连接
-				} else {
-					Log("准备连接到WebSocket服务器 ...");
-					try {
-						var websocketAddress = document.getElementById("Connection").value + "?userId=" + document.getElementById(
-							"txtName").value;
-						console.log(websocketAddress);
-						if ("WebSocket" in window) {
-							ws = new WebSocket(websocketAddress);
-						} else if ("MozWebSocket" in window) {
-							ws = new MozWebSocket(websocketAddress);
-						}
-
-						SocketCreated = true;
-						isUserloggedout = false;
-					} catch (ex) {
-						Log(ex, "ERROR");
-						return;
-					}
-					document.getElementById("ToggleConnection").innerHTML = "断开";
-					ws.onopen = WSonOpen;
-					ws.onmessage = WSonMessage;
-					ws.onclose = WSonClose;
-					ws.onerror = WSonError;
-				}
-			};
-
-
-			function WSonOpen() {
-				lockOff();
-				Log("连接已经建立。", "OK");
-				$("#SendDataContainer").show();
-				ws.send("login:" + document.getElementById("txtName").value);
-			};
-
-			function WSonMessage(event) {
-				Log(event.data);
-			};
-
-			function WSonClose() {
-				lockOff();
-				if (isUserloggedout)
-					Log("【" + document.getElementById("txtName").value + "】与服务器断开连接！");
-				document.getElementById("ToggleConnection").innerHTML = "连接";
-				$("#SendDataContainer").hide();
-			};
-
-			function WSonError() {
-				lockOff();
-				Log("远程连接中断。", "ERROR");
-			};
-
-			function SendDataClicked() {
-				if (document.getElementById("DataToSend").value.trim() != "") {
-					ws.send(document.getElementById("txtName").value + "说 :\"" + document.getElementById("DataToSend").value + "\"");
-				}
-			};
-
-			function Log(Text, MessageType) {
-				if (MessageType == "OK") Text = "<span style='color: green;'>" + Text + "</span>";
-				if (MessageType == "ERROR") Text = "<span style='color: red;'>" + Text + "</span>";
-				document.getElementById("LogContainer").innerHTML = document.getElementById("LogContainer").innerHTML + Text +
-					"<br />";
-				var LogContainer = document.getElementById("LogContainer");
-				LogContainer.scrollTop = LogContainer.scrollHeight;
-			};
-
-			$("#DataToSend").keypress(function(evt) {
-				if (evt.keyCode == 13) {
-					$("#SendData").click();
-					evt.preventDefault();
-				}
-			})
-		</script>
+		<video id="video" height="330" width="300" controls></video>
+		<button id="btn">鎷嶇収</button>
+		<canvas id="canvas" height="300" width="230"></canvas>
 	</body>
 </html>

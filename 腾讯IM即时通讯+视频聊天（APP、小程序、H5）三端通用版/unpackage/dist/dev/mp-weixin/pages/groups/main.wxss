@@ -1,0 +1,33 @@
+.container {
+  background-color: $background;
+  min-height: 100vh;
+}
+.container .group {
+  height: 50px;
+  background-color: #fff;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-bottom: 1px solid $border-base;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 10px 20px;
+}
+.container .group .avatar {
+  width: 60px;
+}
+.container .group .avatar .img {
+  width: 30px;
+  height: 30px;
+}
+.name {
+  line-height: 30px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.type {
+  line-height: 30px;
+}
+

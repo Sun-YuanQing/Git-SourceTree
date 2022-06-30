@@ -1,0 +1,63 @@
+page {
+  height: 100%;
+}
+.rows {
+  padding: 20px;
+}
+.container {
+  background: $background;
+  width: 100%;
+  height: 100%;
+}
+.input-wrapper {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  padding: 20px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.input {
+  color: $regular;
+  text-align: left;
+  height: 32px;
+  background-color: #fff;
+  font-size: 16px;
+  line-height: 32px;
+  width: 75%;
+  -webkit-border-radius: 10px;
+          border-radius: 10px;
+}
+.friends {
+  height: 100vh;
+  background-color: $white;
+}
+.friends .van-index-anchor {
+  background-color: #ededed;
+}
+.friends .van-index-anchor--active {
+  color: $primary;
+}
+.friends .friend-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 12px 0 12px 12px;
+}
+.friends .avatar {
+  width: 40px;
+  height: 40px;
+  margin-right: 12px;
+}
+.friends .username {
+  width: 100%;
+  height: 50px;
+  line-height: 40px;
+  font-size: 18px;
+  border-bottom: 1px solid $background;
+}
+

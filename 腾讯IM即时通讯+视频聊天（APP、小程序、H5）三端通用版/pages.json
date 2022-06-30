@@ -1,0 +1,119 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/login/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},	{
+			"path": "pages/index/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},{
+			"path": "pages/contact/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},	{
+			"path": "pages/own/main",
+			"style": {
+				"navigationBarTitleText": "uni-app2"
+			}
+		},{
+			"path": "pages/chat/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},	{
+			"path": "pages/call/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},{
+			"path": "pages/search/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},	{
+			"path": "pages/create/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},{
+			"path": "pages/members/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},	{
+			"path": "pages/system/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},{
+			"path": "pages/user-profile/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},	{
+			"path": "pages/group-profile/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},{
+			"path": "pages/groups/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},	{
+			"path": "pages/blacklist/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},{
+			"path": "pages/profile/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},	{
+			"path": "pages/update-profile/main",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	 "tabBar": {
+	    "color": "#000000",
+	    "backgroundColor": "#ededed",
+	    "selectedColor": "#006fff",
+	    "borderStyle": "white",
+
+	    "list": [
+	      {
+	        "text": "消息",
+	        "pagePath": "pages/index/main",
+	        "iconPath": "static/theme/chat.png",
+	        "selectedIconPath": "static/theme/chat-theme.png"
+	      },
+	      {
+	        "text": "通讯录",
+	        "pagePath": "pages/contact/main",
+	        "iconPath": "static/theme/contact.png",
+	        "selectedIconPath": "static/theme/contact-theme.png"
+	      },
+	      {
+	        "text": "帐号",
+	        "pagePath": "pages/own/main",
+	        "iconPath": "static/theme/own.png",
+	        "selectedIconPath": "static/theme/own-theme.png"
+	      }
+	    ],
+	    "position": "bottom"
+	  }
+}

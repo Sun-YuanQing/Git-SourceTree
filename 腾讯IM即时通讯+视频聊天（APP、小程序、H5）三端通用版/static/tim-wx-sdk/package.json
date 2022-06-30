@@ -1,0 +1,50 @@
+{
+  "_from": "tim-wx-sdk@^2.8.0",
+  "_id": "tim-wx-sdk@2.8.5",
+  "_inBundle": false,
+  "_integrity": "sha512-OdhaZ4sVodEnBXCn2wahb6uKkQSqJF+Oc2dH8WywU72901nSOyG5i7I4MBVPtg+ifwywFuvFKgpFzAJW6NULDA==",
+  "_location": "/tim-wx-sdk",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "tim-wx-sdk@^2.8.0",
+    "name": "tim-wx-sdk",
+    "escapedName": "tim-wx-sdk",
+    "rawSpec": "^2.8.0",
+    "saveSpec": null,
+    "fetchSpec": "^2.8.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/tim-wx-sdk/-/tim-wx-sdk-2.8.5.tgz",
+  "_shasum": "9c69cd15530ad0970b16ef3c0d361f1dae348eaf",
+  "_spec": "tim-wx-sdk@^2.8.0",
+  "_where": "C:\\Users\\admin\\Desktop\\腾讯Im\\WXMini",
+  "author": {
+    "name": "Tencent Cloud Terminal R&D Center"
+  },
+  "bugs": {
+    "url": "https://github.com/tencentyun/TIMSDK/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Tencent Cloud IM SDK for WX mini app",
+  "homepage": "https://github.com/tencentyun/TIMSDK#readme",
+  "keywords": [
+    "即时通信",
+    "IM",
+    "腾讯云IM",
+    "即时通讯",
+    "通信"
+  ],
+  "license": "ISC",
+  "main": "tim-wx.js",
+  "name": "tim-wx-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/tencentyun/TIMSDK.git"
+  },
+  "version": "2.8.5"
+}

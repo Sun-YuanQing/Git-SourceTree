@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>视频会议</title>
+<style>
+div#container {
+ max-width: 90%;
+}
+video {
+ margin: 0 0.5em 1.5em 0;
+}
+@media screen and (min-width: 800px) {
+ video {
+ width: 45%;
+ }
+}
+</style>
+
+</head>
+<body>
+<div id="container">
+  <video id="vid1" width="640" height="480" autoplay></video>
+  <video id="vid2" width="640" height="480" autoplay></video>
+  <div>
+<input type="text" id="server" size="30" value='http://192.168.0.112'/>
+  <input type="text" id="work" size="30" value='work1'/>
+  <input type="text" id="username" size="30" value='user1'/>
+   <button id="btn1" onclick="connect()">连接服务器</button>
+   <button id="btn2" onclick="createWork()">创建工作区</button>
+   <button id="btn3" onclick="join()">连接到工作区</button>
+   <button id="btn4" onclick="startwork()">开始会议</button>
+  </div>
+</div>
+<script src="./rtc_main.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+.cell-group {
+  margin-top: 10px;
+}
+.logout {
+  color: $danger;
+}
+.signature {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 50vw;
+  color: $secondary;
+}
+.container {
+  height: 100vh;
+  background-color: $background;
+}
+.container .info-card {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 16px;
+  background-color: $white;
+}
+.container .info-card .avatar {
+  width: 80px;
+  height: 80px;
+  -webkit-border-radius: 8px;
+          border-radius: 8px;
+  margin-right: 14px;
+}
+.container .info-card .basic .username {
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: 600;
+}
+.container .info-card .basic .user-id {
+  font-size: 12px;
+  color: $secondary;
+}
+

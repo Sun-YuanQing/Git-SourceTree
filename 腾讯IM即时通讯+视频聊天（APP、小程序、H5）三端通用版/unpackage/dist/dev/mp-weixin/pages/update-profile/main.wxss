@@ -1,0 +1,14 @@
+.update-profile-wrapper.data-v-33c8907a {
+  height: 100vh;
+  padding: 12px;
+}
+.update-profile-wrapper .input.data-v-33c8907a {
+  padding: 12px;
+  border-bottom: 1px solid $dark-background;
+}
+.update-profile-wrapper button.data-v-33c8907a {
+  margin-top: 24px;
+  color: $white;
+  background-color: $primary;
+}
+
