@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body >
+
+<div style="width: 80%; margin: 0 auto;">
+<!--    <button id="begin">开始</button>-->
+    <button id="record" disabled>录制</button>
+<!--    <button id="play" disabled>播放</button>-->
+    <button id="download" disabled>下载</button>
+    <button id="reStart" disabled>重新开始</button>
+<!--    <button id="upload">上传</button>-->
+</div>
+<video id="gum", controls preload="none" width="30%" height="30%"  data-setup="{}" autoplay="autoplay"></video>
+<p id="status", style="text-align: center;width: 402px;"></p>
+<script>
+    var mediaSource = new MediaSource();  //打开电脑摄像头
+    // mediaSource.addEventListener('sourceopen', handleSourceOpen, false);
+    var mediaRecorder ;
+    var recordedBlobs;
+    var sourceBuffer;
+    var littleVideo = false;
+
+    var gumVideo = document.querySelector("#gum");  //把图像显示在video上
+    var statusV = document.getElementById("status"); //显示状态信息
+    // var recordedVideo = document.querySelector("video#recorded");
+    // statusV.innerText = '准备阶段';
+
+    // var beginButton = document.querySelector("button#begin");
+    var recordButton = document.querySelector("button#record");
+    var playButton = document.querySelector("button#play");
+    var downloadButton = document.querySelector("button#download");
+    var reStartButton = document.querySelector("button#reStart");
+    var uploadBtn = document.querySelector("button#upload");
+
+
+    recordButton.onclick = toggleRecording;
+    // playButton.onclick = play;
+    downloadButton.onclick = download;
+    reStartButton.onclick = restartRecord;
+
+
+
+    var constraints = {
+        audio: true,
+        video: true
+    };
+
+
+    function handleSuccess(stream) {
+        recordButton.disabled = false;
+        console.log("getUserMedia() got stream: ", stream);
+        window.stream = stream;
+        if (window.URL) {
+            //gumVideo.src = window.URL.createObjectURL(stream);
+            gumVideo.srcObject = stream;
+        } else {
+            gumVideo.src = stream;
+        }
+
+
+
+        gumVideo.addEventListener('pause',function() {if(i){window.clearInterval(i);}},false);
+        gumVideo.addEventListener('ended',function() {if(i){clearInterval(i);}},false);
+    }
+
+    // function handleError(error) {
+    //     console.log("navigator.getUserMedia error: ", error);
+    // }
+
+    navigator.mediaDevices.getUserMedia(constraints).  //打开摄像头
+    then(handleSuccess).catch(handleError);
+
+    // function handleSourceOpen(event) {
+    //     console.log("MediaSource opened");
+    //     sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp8"');
+    //     console.log("Source buffer: ", sourceBuffer);
+    // }
+
+    // recordedVideo.addEventListener('error', function(ev) {
+    //     console.error('MediaRecording.recordedMedia.error()');
+    //     alert('Your browser can not play\n\n' + recordedVideo.src
+    //         + '\n\n media clip. event: ' + JSON.stringify(ev));
+    // }, true);
+
+    function handleDataAvailable(event) {
+        if (event.data && event.data.size > 0) {
+            recordedBlobs.push(event.data);
+        }
+    }
+
+    function handleStop(event) {
+        console.log("Recorder stopped: ", event);
+    }
+
+    function toggleRecording() {
+        if (recordButton.textContent === '录制' || recordButton.textContent === '重录') {
+            littleVideo = false;
+            startRecording();
+        } else {
+            stopRecording();
+            recordButton.textContent = '重录';
+            // playButton.disabled = false;
+            downloadButton.disabled = false;
+            reStartButton.disabled = false;
+        }
+    }
+
+    function startRecording() {
+        statusV.innerText = '开始录制';
+        //todo：显示录制中 提示
+        recordedBlobs = [];
+        var options = {mimeType: 'video/webm;codecs=vp9'};
+        if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+            console.log(options.mimeType + ' is not Supported');
+            options = {mimeType: 'video/webm;codecs=vp8'};
+            if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                console.log(options.mimeType + ' is not Supported');
+                options = {mimeType: 'video/webm'};
+                if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                    console.log(options.mimeType + ' is not Supported');
+                    options = {mimeType: ''};
+                }
+            }
+        }
+        try {
+            mediaRecorder = new MediaRecorder(window.stream, options);
+        } catch (e) {
+            console.error('Exception while creating MediaRecorder: ' + e);
+            alert('Exception while creating MediaRecorder: '
+                + e + '. mimeType: ' + options.mimeType);
+            return;
+        }
+        // console.log('Created MediaRecorder', mediaRecorder, 'with options', options);
+        recordButton.textContent = '停止';
+        // playButton.disabled = true;
+        downloadButton.disabled = true;
+        reStartButton.disabled = true;
+        mediaRecorder.onstop = handleStop;
+        mediaRecorder.ondataavailable = handleDataAvailable;
+        mediaRecorder.start(10); // collect 10ms of data
+        // console.log('MediaRecorder started', mediaRecorder);
+    }
+
+    function stopRecording() {
+        statusV.innerText = '停止录像';
+        //影藏录制中提
+        mediaRecorder.stop();
+        console.log('Recorded Blobs: ', recordedBlobs);
+        //recordedVideo.controls = true;
+    }
+
+    // function play() {
+    //     var superBuffer = new Blob(recordedBlobs, {type: 'video/mp4'});
+    //     //recordedVideo.src = window.URL.createObjectURL(superBuffer);
+    //     gumVideo.src = window.URL.createObjectURL(superBuffer);
+    // }
+
+    function download() {
+        var blob = new Blob(recordedBlobs, {type: 'video/mp4'});
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        //文件名 通过方法传进来 检测是否合法？
+        a.download = '视频录像.mp4';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 100);
+    }
+
+
+    function upload(){
+        formData.append('nickName','Jack');//-->后台用req.body.nickName将值'Jack'取出
+        var blob = new Blob(recordedBlobs, {type: 'video/mp4'});
+        // var data = new FormData();
+        var data = new FormData();
+        data.append('file', file);
+        return uploadVideoFile(data).then(res => {
+            return this.recordVideoUrl = res.url;//获取上传的视频地址
+        })
+        // data.append('video', blob);
+        // data.append('qw', 123);
+        // data.append('question', 1);
+        // var formData = new FormData();
+        //
+        // formData.append("username", "Groucho");
+        // formData.append("accountnum", 123456); // 数字 123456 会被立即转换成字符串 "123456"
+        //
+        // // JavaScript file-like 对象
+        // var content = '<a id="a"><b id="b">hey!</b></a>';
+        // var blob = new Blob([content], { type: "text/xml"});
+        //
+        // formData.append("webmasterfile", blob);
+        //
+        // console.log(formData);
+
+        $.ajax({
+            type: "POST",
+            url: "/form/data",
+            data: data,
+            processData:false,   //  告诉jquery不要处理发送的数据
+            contentType:false,    // 告诉jquery不要设置content-Type请求头
+            success:function(msg){
+                console.log(msg);
+            }
+        });
+    }
+
+    function restartRecord(){
+        //清楚存留 按钮功能重置
+        recordButton.textContent = '录制';
+        playButton.disabled = true;
+        downloadButton.disabled = true;
+        reStartButton.disabled = true;
+        //handleSuccess();
+        navigator.mediaDevices.getUserMedia(constraints).
+        then(handleSuccess).catch(handleError);
+        // statusV.innerText = '准备阶段';
+    }
+</script>
+</body>
+</html>
