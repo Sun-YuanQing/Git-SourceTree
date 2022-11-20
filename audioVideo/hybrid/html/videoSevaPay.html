@@ -9,12 +9,13 @@
 <div style="width: 80%; margin: 0 auto;">
 <!--    <button id="begin">开始</button>-->
     <button id="record" disabled>录制</button>
-<!--    <button id="play" disabled>播放</button>-->
+   <button id="play" disabled>播放</button>
     <button id="download" disabled>下载</button>
     <button id="reStart" disabled>重新开始</button>
 <!--    <button id="upload">上传</button>-->
 </div>
 <video id="gum", controls preload="none" width="30%" height="30%"  data-setup="{}" autoplay="autoplay"></video>
+<video id="recorded", controls preload="none" width="30%" height="30%"  data-setup="{}" autoplay="autoplay"></video>
 <p id="status", style="text-align: center;width: 402px;"></p>
 <script>
     var mediaSource = new MediaSource();  //打开电脑摄像头
@@ -26,8 +27,8 @@
 
     var gumVideo = document.querySelector("#gum");  //把图像显示在video上
     var statusV = document.getElementById("status"); //显示状态信息
-    // var recordedVideo = document.querySelector("video#recorded");
-    // statusV.innerText = '准备阶段';
+    var recordedVideo = document.querySelector("video#recorded");
+    statusV.innerText = '准备阶段';
 
     // var beginButton = document.querySelector("button#begin");
     var recordButton = document.querySelector("button#record");
@@ -38,7 +39,7 @@
 
 
     recordButton.onclick = toggleRecording;
-    // playButton.onclick = play;
+    playButton.onclick = play;
     downloadButton.onclick = download;
     reStartButton.onclick = restartRecord;
 
@@ -67,9 +68,9 @@
         gumVideo.addEventListener('ended',function() {if(i){clearInterval(i);}},false);
     }
 
-    // function handleError(error) {
-    //     console.log("navigator.getUserMedia error: ", error);
-    // }
+    function handleError(error) {
+        console.log("navigator.getUserMedia error: ", error);
+    }
 
     navigator.mediaDevices.getUserMedia(constraints).  //打开摄像头
     then(handleSuccess).catch(handleError);
@@ -80,11 +81,11 @@
     //     console.log("Source buffer: ", sourceBuffer);
     // }
 
-    // recordedVideo.addEventListener('error', function(ev) {
-    //     console.error('MediaRecording.recordedMedia.error()');
-    //     alert('Your browser can not play\n\n' + recordedVideo.src
-    //         + '\n\n media clip. event: ' + JSON.stringify(ev));
-    // }, true);
+    recordedVideo.addEventListener('error', function(ev) {
+        console.error('MediaRecording.recordedMedia.error()');
+        alert('Your browser can not play\n\n' + recordedVideo.src
+            + '\n\n media clip. event: ' + JSON.stringify(ev));
+    }, true);
 
     function handleDataAvailable(event) {
         if (event.data && event.data.size > 0) {
@@ -103,7 +104,7 @@
         } else {
             stopRecording();
             recordButton.textContent = '重录';
-            // playButton.disabled = false;
+             playButton.disabled = false;
             downloadButton.disabled = false;
             reStartButton.disabled = false;
         }
@@ -136,7 +137,7 @@
         }
         // console.log('Created MediaRecorder', mediaRecorder, 'with options', options);
         recordButton.textContent = '停止';
-        // playButton.disabled = true;
+        playButton.disabled = true;
         downloadButton.disabled = true;
         reStartButton.disabled = true;
         mediaRecorder.onstop = handleStop;
@@ -150,14 +151,14 @@
         //影藏录制中提
         mediaRecorder.stop();
         console.log('Recorded Blobs: ', recordedBlobs);
-        //recordedVideo.controls = true;
+        recordedVideo.controls = true;
     }
 
-    // function play() {
-    //     var superBuffer = new Blob(recordedBlobs, {type: 'video/mp4'});
-    //     //recordedVideo.src = window.URL.createObjectURL(superBuffer);
-    //     gumVideo.src = window.URL.createObjectURL(superBuffer);
-    // }
+    function play() {
+        var superBuffer = new Blob(recordedBlobs, {type: 'video/mp4'});
+        recordedVideo.src = window.URL.createObjectURL(superBuffer);
+        //gumVideo.src = window.URL.createObjectURL(superBuffer);
+    }
 
     function download() {
         var blob = new Blob(recordedBlobs, {type: 'video/mp4'});
